@@ -110,16 +110,25 @@ features = {k:image_features[i] for i in train_dataset}
 
 lines = list()
 for key in descriptions.keys():
-    [lines.append(val) from val in  descriptions[key]]
+    [lines.append(val) for val in  descriptions[key]]
 tokenizer = Tokenizer()
 tokenizer.fit_on_texts(lines)
 vocab_size = len(tokenizer.wod_index) + 1
+
+def to_lines(descriptions):
+	all_desc = list()
+	for key in descriptions.keys():
+		[all_desc.append(d) for d in descriptions[key]]
+	return all_desc
 
 def max_length(descriptions):
 	lines = to_lines(descriptions)
 	return max(len(d.split()) for d in lines)
 
 max_length = max_length(descriptions)
+
+from keras.preprocessing.sequence import pad_sequences
+from keras.utils import to_categorical
 
 X1_train,X2_train,y_train = list(),list(),list()
 for key,desc_list in descriptions.items():
