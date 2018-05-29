@@ -12,7 +12,7 @@ from keras.models import Model
 def extract_features(directory):
     model = VGG16()
     model.layers.pop()
-    model = Model(intput = model.inputs,output=model.layers[-1].output)
+    model = Model(input = model.inputs,output=model.layers[-1].output)
     features = dict()
     for filename in listdir(directory):
         path = directory + '/' + filename
@@ -21,6 +21,7 @@ def extract_features(directory):
         image = image.reshape(1,image.shape[0],image.shape[1],image.shape[2])
         image = preprocess_input(image)
         feature = model.predict(image,verbose=0)
+        print(feature)
         image_id = filename.split('.')[0]
         features[image_id] = feature
     return features
